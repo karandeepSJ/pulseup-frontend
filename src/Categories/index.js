@@ -9,24 +9,10 @@ class Category extends Component {
     error: ""
   };
   async componentDidMount() {
-    this.setState({
-      categories: [
-        { index: 1, name: "DLP" },
-        { index: 2, name: "BEC" },
-        { index: 3, name: "ML" },
-        { index: 4, name: "Embedded" },
-        { index: 5, name: "LEC" },
-        { index: 6, name: "System" },
-        { index: 7, name: "Signals" },
-        { index: 8, name: "aaa" },
-        { index: 9, name: "bbb" }
-      ],
-      loading: false
-    });
-    // var res = await fetchWithAuth("http://localhost:8080/questions/");
-    // res = await res.json();
-    // if (!res.error) this.setState({ questions: res, loading: false });
-    // else this.setState({ error: res.error, loading: false });
+    var res = await fetchWithAuth("/dashboard");
+    res = await res.json();
+    console.log(res);
+    this.setState({categories: res.categories, loading: false});
   }
   render() {
     const { loading, categories, error } = this.state;
@@ -40,12 +26,13 @@ class Category extends Component {
               style={{
                 display: "inline-grid",
                 width: "33%",
-                paddingRight: "1%"
+                paddingRight: "1%",
+                paddingBottom: '1%',
               }}
             >
               <Link
-                to={``}
-                className="waves-effect waves-light btn-large"
+                to={`category/${category.id}/`}
+                className= {category.locked? 'btn-large disabled' : 'btn-large'}
                 style={{
                   width: "100%",
                   height: "100%",

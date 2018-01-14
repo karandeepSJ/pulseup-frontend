@@ -18,11 +18,7 @@ window.fetchWithAuth = (url, options = {}) => {
     }
   }
   return fetch(url, {
-    ...options,
-    body,
-    headers: {
-      ...options.headers,
-      username: window.username
-    }
+    method: 'GET',
+    body: body,
   });
 };
