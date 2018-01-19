@@ -48,13 +48,21 @@ function dataComponent(WrappedComponent, urlFn, fetchFn) {
     async fetchData(props) {
       this.setState({ loading: true });
       const url = typeof urlFn === "function" ? urlFn(props) : urlFn;
+      if (!url) {
+        this.setState({
+          data: { ...this.state.data, __falsyurl: true },
+          error: "",
+          loading: false
+        });
+        return;
+      }
       let res = await window.fetchWithAuth(url);
       if (!res.ok) {
         this.setState({ error: res.statusText, loading: false });
         return;
       }
       res = await res.json();
-      if (!res.error) this.setState({ data: res, loading: false });
+      if (!res.error) this.setState({ data: res, error: "", loading: false });
       else this.setState({ error: res.error, loading: false });
     }
 

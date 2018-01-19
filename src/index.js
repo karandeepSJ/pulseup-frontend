@@ -13,21 +13,22 @@ import QuestionsList from "./QuestionsList";
 import QuestionViewer from "./QuestionViewer";
 import Scoreboard from "./Scoreboard";
 
-import Hello from "./Hello";
-
 const browserHistory = createBrowserHistory();
 window.browserHistory = browserHistory;
 
 authinit();
 const routes = (
-      <Router history={browserHistory}>
+  <Router history={browserHistory}>
     <Route path={process.env.PUBLIC_URL} component={App}>
       <IndexRoute component={Category} />
       <Route path="/category/:category" component={QuestionsList} />
-      <Route path="/category/:category/question/:qno" component={QuestionViewer} />
+      <Route
+        path="/category/:category/question/:qno"
+        component={QuestionViewer}
+      />
       <Route path="/scoreboard" component={Scoreboard} />
       <Route path="/logout" component={logout} />
     </Route>
   </Router>
-  );
+);
 render(routes, document.getElementById("app"));
