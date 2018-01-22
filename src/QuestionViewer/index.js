@@ -15,13 +15,15 @@ class QuestionViewer extends Component {
     question: {},
     loading: true,
     error: "",
-    answer: "",
+    answer: [],
     number_of_q: 0,
     options: [],
-    wait: true
+    wait: true,
+    checked: [false, false, false, false]
   };
   async componentDidMount() {
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.lockCategory = this.lockCategory.bind(this);
     var ques = await window.fetchWithAuth(
       `/access/${this.props.params.category}`
     );
@@ -45,36 +47,51 @@ class QuestionViewer extends Component {
       question: ques,
       loading: false,
       number_of_q: qObj.questions.length,
-      options: ques.options
+      options: ques.options,
+      checked: [false, false, false, false]
     });
   }
 
   handleAnswerChange = e => {
-    this.setState({ answer: e.target.value });
+    var a = this.state.answer;
+    if (
+      !a.find((o, i) => {
+        if (o.qid == this.state.question.qid) {
+          a[i] = { qid: this.state.question.qid, answer: e.target.value };
+          return true;
+        }
+      })
+    )
+      a.push({ qid: this.state.question.qid, answer: e.target.value });
+    var ch = [false, false, false, false];
+    ch[e.target.value - 1] = true;
+    this.setState({ answer: a, checked: ch });
   };
 
-  async checkAnswer(e) {
-    // alert("AA");
-    e.preventDefault();
+  async checkAnswer(answer) {
     var check = await window.fetchWithAuth(
-      `/answer/${this.state.question.qid}/${this.state.answer}`
+      `/answer/${answer.qid}/${answer.answer}`
     );
     var response = await check.json();
     if (response.status === "ok") {
-      alert("Answer Submitted");
-      this.setState({ answer: "" });
-      e.target["0"].checked = false;
-      e.target["1"].checked = false;
-      e.target["2"].checked = false;
-      e.target["3"].checked = false;
-    } else {
-      alert(response.msg);
-      window.location = "/";
-    }
+      return "ok";
+    } else return response.msg;
   }
 
   async lockCategory() {
-    if (window.confirm("Are you sure you want to lock this category?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to submit your answers? This will lock the category"
+      )
+    ) {
+      var answers = this.state.answer;
+      for (var answer in answers) {
+        var stat = await this.checkAnswer(answers[answer]);
+        if (stat != "ok") {
+          alert(stat);
+          return;
+        }
+      }
       var lock = await window.fetchWithAuth("lock");
       lock = await lock.json();
       alert(lock.msg);
@@ -109,7 +126,7 @@ class QuestionViewer extends Component {
               }}
             />
           </p>
-          <form onSubmit={this.checkAnswer}>
+          <form onSubmit="return false">
             <label for="answer">Answer</label>
             {options.map((option, idx) => (
               <label className="container">
@@ -117,13 +134,13 @@ class QuestionViewer extends Component {
                 <input
                   type="radio"
                   name="radio"
+                  checked={this.state.checked[idx]}
                   value={idx + 1}
                   onChange={this.handleAnswerChange}
                 />
                 <span className="checkmark" />
               </label>
             ))}
-            <button class="button-primary float-right">Submit</button>
             <div class="clearfix" />
             {qno !== 1 && (
               <Link
@@ -152,7 +169,7 @@ class QuestionViewer extends Component {
               marginLeft: "35%"
             }}
           >
-            Lock Category
+            Submit My Answers
           </button>
         </div>
       );

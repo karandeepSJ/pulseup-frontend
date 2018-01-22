@@ -26,14 +26,7 @@ class QuestionsList extends Component {
       window.location = "/";
     }
   }
-  async lockCategory() {
-    if (window.confirm("Are you sure you want to lock this category?")) {
-      var lock = await window.fetchWithAuth("lock");
-      lock = await lock.json();
-      alert(lock.msg);
-      window.location = "/";
-    }
-  }
+
   render() {
     const { loading, questions, error, wait } = this.state;
     if (!wait) {
@@ -53,15 +46,6 @@ class QuestionsList extends Component {
             ))}
           </ul>
           {error && <div className="error">ERROR: {error}</div>}
-          <button
-            class="button-primary"
-            onclick={this.lockCategory}
-            style={{
-              marginLeft: "35%"
-            }}
-          >
-            Lock Category
-          </button>
         </div>
       );
     }
