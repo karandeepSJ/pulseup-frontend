@@ -16,7 +16,7 @@ import Scoreboard from "./Scoreboard";
 const browserHistory = createBrowserHistory();
 window.browserHistory = browserHistory;
 
-authinit();
+// authinit();
 const routes = (
   <Router history={browserHistory}>
     <Route path={process.env.PUBLIC_URL} component={App}>
