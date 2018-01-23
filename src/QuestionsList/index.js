@@ -29,6 +29,7 @@ class QuestionsList extends Component {
 
   render() {
     const { loading, questions, error, wait } = this.state;
+    const { category } = this.props.params;
     if (!wait) {
       return (
         <div>
@@ -41,7 +42,7 @@ class QuestionsList extends Component {
           <ul>
             {questions.map((question, index) => (
               <li>
-                <Link to={`question/${index + 1}/`}>{question.statement}</Link>
+                <Link to={`/category/${category}/question/${index + 1}/`}>{question.statement}</Link>
               </li>
             ))}
           </ul>
