@@ -20,5 +20,6 @@ window.fetchWithAuth = (url, options = {}) => {
   return fetch(url, {
     method: 'GET',
     body: body,
+    credentials: "same-origin",
   });
 };
