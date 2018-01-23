@@ -33,7 +33,7 @@ class QuestionViewer extends Component {
       await this.fetchQuestion();
     } else {
       alert(ques.msg);
-      window.location = process.env.PUBLIC_URL;
+      window.browserHistory.push(process.env.PUBLIC_URL);
     }
   }
   async componentWillReceiveProps(nextProps) {
@@ -95,7 +95,7 @@ class QuestionViewer extends Component {
       var lock = await window.fetchWithAuth("lock");
       lock = await lock.json();
       alert(lock.msg);
-      window.location = process.env.PUBLIC_URL;
+      window.browserHistory.push(process.env.PUBLIC_URL);
     }
   }
 

@@ -23,7 +23,7 @@ class QuestionsList extends Component {
       window.localStorage.questions = JSON.stringify(ques.msg);
     } else {
       alert(ques.msg);
-      window.location = process.env.PUBLIC_URL;
+      window.browserHistory.push(process.env.PUBLIC_URL);
     }
   }
 
