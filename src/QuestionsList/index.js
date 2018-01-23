@@ -1,7 +1,7 @@
 /* global fetchWithAuth */
 
 import Component from "inferno-component";
-import { Link } from "inferno-router";
+import Link from "../Link";
 import Timer from "../Timer";
 
 class QuestionsList extends Component {
@@ -23,7 +23,7 @@ class QuestionsList extends Component {
       window.localStorage.questions = JSON.stringify(ques.msg);
     } else {
       alert(ques.msg);
-      window.location = "/";
+      window.location = process.env.PUBLIC_URL;
     }
   }
 

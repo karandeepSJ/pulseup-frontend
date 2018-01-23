@@ -59,7 +59,7 @@ class Timer extends Component {
         .then(response => {
           console.log(response);
           alert(response.msg);
-          window.location = "/";
+          window.location = process.env.PUBLIC_URL;
           window.localStorage.removeItem("questions");
         });
     }

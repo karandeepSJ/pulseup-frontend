@@ -1,7 +1,7 @@
 /* global fetchWithAuth */
 
 import Component from "inferno-component";
-import { Link } from "inferno-router";
+import Link from "../Link";
 class Category extends Component {
   state = {
     categories: [],

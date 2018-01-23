@@ -1,4 +1,4 @@
-import { Link } from "inferno-router";
+import Link from "../Link";
 import linkState from "linkstate";
 import Component from "inferno-component";
 import Timer from "../Timer";
@@ -33,7 +33,7 @@ class QuestionViewer extends Component {
       await this.fetchQuestion();
     } else {
       alert(ques.msg);
-      window.location = "/";
+      window.location = process.env.PUBLIC_URL;
     }
   }
   async componentWillReceiveProps(nextProps) {
@@ -95,7 +95,7 @@ class QuestionViewer extends Component {
       var lock = await window.fetchWithAuth("lock");
       lock = await lock.json();
       alert(lock.msg);
-      window.location = "/";
+      window.location = process.env.PUBLIC_URL;
     }
   }
 
