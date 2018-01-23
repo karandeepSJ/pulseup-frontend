@@ -9,6 +9,7 @@
 window.fetchWithAuth = (url, options = {}) => {
   url = url.startsWith("/") ? url : "/" + url;
   url = process.env.INFERNO_APP_BACKEND_URL + url;
+  url = url.endsWith("/") ? url : url + "/"; // DIRTY Django fix
   var body = options.body;
   if (body && typeof body.getAll !== "function") {
     // is not formdata
