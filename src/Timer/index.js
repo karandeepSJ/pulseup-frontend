@@ -20,7 +20,7 @@ class Timer extends Component {
   }
 
   async componentDidMount() {
-    window.fetchWithAuth(`${process.env.INFERNO_APP_BACKEND_URL}/dashboard`, {
+    window.fetchWithAuth(`/dashboard`, {
       method: "GET"
     })
       .then(response => response.json())
@@ -52,7 +52,7 @@ class Timer extends Component {
     if (seconds <= 0) {
       clearInterval(this.timer);
       alert("Time Up");
-      window.fetchWithAuth(`${process.env.INFERNO_APP_BACKEND_URL}/lock`, {
+      window.fetchWithAuth(`/lock`, {
         method: "GET"
       })
         .then(response => response.json())
