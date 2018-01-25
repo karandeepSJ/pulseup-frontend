@@ -20,6 +20,8 @@ class Timer extends Component {
   }
 
   async componentDidMount() {
+    this.checkAnswer = this.checkAnswer.bind(this);
+    this.lockCategory = this.lockCategory.bind(this);
     window
       .fetchWithAuth(`/dashboard`, {
         method: "GET"
@@ -39,6 +41,32 @@ class Timer extends Component {
     this.timer = setInterval(this.countDown, 1000);
   }
 
+  async checkAnswer(answer) {
+    var check = await window.fetchWithAuth(
+      `/answer/${answer.qid}/${answer.answer}`
+    );
+    var response = await check.json();
+    if (response.status === "ok") {
+      return "ok";
+    } else return response.msg;
+  }
+
+  async lockCategory() {
+    if (window.localStorage.answers) {
+      var answers = JSON.parse(window.localStorage.answers);
+      for (var answer in answers) {
+        var stat = await this.checkAnswer(answers[answer]);
+      }
+    }
+    var lock = await window.fetchWithAuth(`/lock`, {
+      method: "GET"
+    });
+    lock = await lock.json();
+    window.browserHistory.push(process.env.PUBLIC_URL);
+    window.localStorage.removeItem("questions");
+    window.localStorage.removeItem("answers");
+  }
+
   countDown = () => {
     const seconds = this.state.seconds - 1;
     this.setState({
@@ -48,15 +76,7 @@ class Timer extends Component {
     if (seconds <= 0) {
       clearInterval(this.timer);
       alert("Time Up");
-      window
-        .fetchWithAuth(`/lock`, {
-          method: "GET"
-        })
-        .then(response => response.json())
-        .then(response => {
-          window.browserHistory.push(process.env.PUBLIC_URL);
-          window.localStorage.removeItem("questions");
-        });
+      this.lockCategory();
     }
   };
 
