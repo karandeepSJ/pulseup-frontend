@@ -42,12 +42,28 @@ class QuestionViewer extends Component {
   async fetchQuestion(qno = this.props.params.qno) {
     var qObj = JSON.parse(window.localStorage.questions);
     var ques = qObj.questions[qno - 1];
+    var ans,
+      ch = [false, false, false, false];
+    if (window.localStorage.answers) {
+      var a = JSON.parse(window.localStorage.answers);
+      if (
+        a.find((o, i) => {
+          if (o.qid == ques.qid) {
+            ans = o.answer;
+            return true;
+          }
+          return false;
+        })
+      )
+        this.setState({ answer: a });
+      ch[ans - 1] = true;
+    }
     this.setState({
       question: ques,
       loading: false,
       number_of_q: qObj.questions.length,
       options: ques.options,
-      checked: [false, false, false, false]
+      checked: ch
     });
   }
 
@@ -66,6 +82,7 @@ class QuestionViewer extends Component {
     var ch = [false, false, false, false];
     ch[e.target.value - 1] = true;
     this.setState({ answer: a, checked: ch });
+    window.localStorage.answers = JSON.stringify(a);
   };
 
   async checkAnswer(answer) {
