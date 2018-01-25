@@ -21,6 +21,7 @@ class QuestionsList extends Component {
         questions: ques.msg.questions
       });
       window.localStorage.questions = JSON.stringify(ques.msg);
+      console.log(ques.msg);
     } else {
       alert(ques.msg);
       window.browserHistory.push(process.env.PUBLIC_URL);
@@ -42,7 +43,9 @@ class QuestionsList extends Component {
           <ul>
             {questions.map((question, index) => (
               <li>
-                <Link to={`/category/${category}/question/${index + 1}/`}>{question.statement}</Link>
+                <Link to={`/category/${category}/question/${index + 1}/`}>
+                  Question {index + 1}
+                </Link>
               </li>
             ))}
           </ul>
