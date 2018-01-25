@@ -17,7 +17,7 @@ class QuestionViewer extends Component {
     number_of_q: 0,
     options: [],
     wait: true,
-    val: "Enter Option number"
+    val: ""
   };
   async componentDidMount() {
     this.checkAnswer = this.checkAnswer.bind(this);
@@ -55,7 +55,7 @@ class QuestionViewer extends Component {
       )
         this.setState({ answer: a, val: ans });
       else {
-        this.setState({ val: "Enter Option number" });
+        this.setState({ val: "" });
       }
     }
     this.setState({
@@ -63,7 +63,7 @@ class QuestionViewer extends Component {
       loading: false,
       number_of_q: qObj.questions.length,
       options: ques.options,
-      val: ans
+      val: ""
     });
   }
 
@@ -135,6 +135,7 @@ class QuestionViewer extends Component {
                 {idx + 1}. {option}
               </div>
             ))}
+            <label>Enter Option Number </label>
             <input
               type="text"
               name="answer"
