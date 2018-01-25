@@ -1,13 +1,12 @@
 import Link from "../Link";
 import Component from "inferno-component";
 import Timer from "../Timer";
-import "./index.css";
-var Remarkable = require("remarkable");
-var md = new Remarkable({
-  html: true,
-  linkify: true,
-  typographer: true
-});
+// var Remarkable = require("remarkable");
+// var md = new Remarkable({
+//   html: true,
+//   linkify: true,
+//   typographer: true
+// });
 
 class QuestionViewer extends Component {
   state = {
@@ -18,7 +17,7 @@ class QuestionViewer extends Component {
     number_of_q: 0,
     options: [],
     wait: true,
-    checked: [false, false, false, false]
+    val: "Enter Option number"
   };
   async componentDidMount() {
     this.checkAnswer = this.checkAnswer.bind(this);
@@ -42,8 +41,7 @@ class QuestionViewer extends Component {
   async fetchQuestion(qno = this.props.params.qno) {
     var qObj = JSON.parse(window.localStorage.questions);
     var ques = qObj.questions[qno - 1];
-    var ans,
-      ch = [false, false, false, false];
+    var ans;
     if (window.localStorage.answers) {
       var a = JSON.parse(window.localStorage.answers);
       if (
@@ -55,15 +53,17 @@ class QuestionViewer extends Component {
           return false;
         })
       )
-        this.setState({ answer: a });
-      ch[ans - 1] = true;
+        this.setState({ answer: a, val: ans });
+      else {
+        this.setState({ val: "Enter Option number" });
+      }
     }
     this.setState({
       question: ques,
       loading: false,
       number_of_q: qObj.questions.length,
       options: ques.options,
-      checked: ch
+      val: ans
     });
   }
 
@@ -79,9 +79,8 @@ class QuestionViewer extends Component {
       })
     )
       a.push({ qid: this.state.question.qid, answer: e.target.value });
-    var ch = [false, false, false, false];
-    ch[e.target.value - 1] = true;
-    this.setState({ answer: a, checked: ch });
+    var ch = e.target.value;
+    this.setState({ answer: a, val: ch });
     window.localStorage.answers = JSON.stringify(a);
   };
 
@@ -129,28 +128,19 @@ class QuestionViewer extends Component {
             Q{qno}: {question.title}
           </h1>
           {error && <div className="error">ERROR: {error}</div>}
-          <p>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: md.render(`${question.statement}`)
-              }}
-            />
-          </p>
+          <p>{question.statement}</p>
           <form onSubmit="return false">
-            <label for="answer">Answer</label>
             {options.map((option, idx) => (
-              <label className="container">
-                {option}
-                <input
-                  type="radio"
-                  name="radio"
-                  checked={this.state.checked[idx]}
-                  value={idx + 1}
-                  onChange={this.handleAnswerChange}
-                />
-                <span className="checkmark" />
-              </label>
+              <div>
+                {idx + 1}. {option}
+              </div>
             ))}
+            <input
+              type="text"
+              name="answer"
+              value={this.state.val}
+              onChange={this.handleAnswerChange}
+            />
             <div class="clearfix" />
             {qno !== 1 && (
               <Link
