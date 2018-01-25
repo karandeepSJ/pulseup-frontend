@@ -21,7 +21,6 @@ class QuestionsList extends Component {
         questions: ques.msg.questions
       });
       window.localStorage.questions = JSON.stringify(ques.msg);
-      console.log(ques.msg);
     } else {
       alert(ques.msg);
       window.browserHistory.push(process.env.PUBLIC_URL);

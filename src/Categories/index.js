@@ -12,7 +12,6 @@ class Category extends Component {
   async componentDidMount() {
     var res = await fetchWithAuth("/dashboard");
     res = await res.json();
-    console.log(res);
     if (res.game_over)
       alert(
         "You scored less than 15 points in your last category. You are out of the competition."

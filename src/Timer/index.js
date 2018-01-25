@@ -27,19 +27,14 @@ class Timer extends Component {
       .then(response => response.json())
       .then(response => {
         this.setState({ epoch: response.epoch, score: response.score });
-        console.log(this.state.epoch);
-        console.log("EPOCH");
         this.startTimer();
       });
   }
 
   startTimer() {
-    console.log(this.props);
-    console.log(this.state.epoch);
     var timeLeft = new Date().getTime() - this.state.epoch * 1000;
     timeLeft /= 1000;
     timeLeft = 300 - timeLeft;
-    console.log(timeLeft);
     this.setState({ time: this.secondsToTime(timeLeft), seconds: timeLeft });
     this.timer = setInterval(this.countDown, 1000);
   }
@@ -59,7 +54,6 @@ class Timer extends Component {
         })
         .then(response => response.json())
         .then(response => {
-          console.log(response);
           alert(response.msg);
           window.browserHistory.push(process.env.PUBLIC_URL);
           window.localStorage.removeItem("questions");

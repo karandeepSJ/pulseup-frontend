@@ -1,5 +1,4 @@
 import Link from "../Link";
-import linkState from "linkstate";
 import Component from "inferno-component";
 import Timer from "../Timer";
 import "./index.css";
@@ -56,10 +55,11 @@ class QuestionViewer extends Component {
     var a = this.state.answer;
     if (
       !a.find((o, i) => {
-        if (o.qid == this.state.question.qid) {
+        if (o.qid === this.state.question.qid) {
           a[i] = { qid: this.state.question.qid, answer: e.target.value };
           return true;
         }
+        return false;
       })
     )
       a.push({ qid: this.state.question.qid, answer: e.target.value });
@@ -87,7 +87,7 @@ class QuestionViewer extends Component {
       var answers = this.state.answer;
       for (var answer in answers) {
         var stat = await this.checkAnswer(answers[answer]);
-        if (stat != "ok") {
+        if (stat !== "ok") {
           alert(stat);
           return;
         }
@@ -100,15 +100,7 @@ class QuestionViewer extends Component {
   }
 
   render() {
-    const {
-      loading,
-      question,
-      error,
-      answer,
-      number_of_q,
-      options,
-      wait
-    } = this.state;
+    const { loading, question, error, number_of_q, options, wait } = this.state;
     const qno = parseInt(this.props.params.qno, 10);
     if (!wait) {
       return (
