@@ -20,9 +20,10 @@ class Timer extends Component {
   }
 
   async componentDidMount() {
-    window.fetchWithAuth(`/dashboard`, {
-      method: "GET"
-    })
+    window
+      .fetchWithAuth(`/dashboard`, {
+        method: "GET"
+      })
       .then(response => response.json())
       .then(response => {
         this.setState({ epoch: response.epoch, score: response.score });
@@ -37,7 +38,7 @@ class Timer extends Component {
     console.log(this.state.epoch);
     var timeLeft = new Date().getTime() - this.state.epoch * 1000;
     timeLeft /= 1000;
-    timeLeft = 16900 - timeLeft;
+    timeLeft = 300 - timeLeft;
     console.log(timeLeft);
     this.setState({ time: this.secondsToTime(timeLeft), seconds: timeLeft });
     this.timer = setInterval(this.countDown, 1000);
@@ -52,9 +53,10 @@ class Timer extends Component {
     if (seconds <= 0) {
       clearInterval(this.timer);
       alert("Time Up");
-      window.fetchWithAuth(`/lock`, {
-        method: "GET"
-      })
+      window
+        .fetchWithAuth(`/lock`, {
+          method: "GET"
+        })
         .then(response => response.json())
         .then(response => {
           console.log(response);
