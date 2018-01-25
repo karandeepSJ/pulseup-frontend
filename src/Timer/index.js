@@ -37,6 +37,7 @@ class Timer extends Component {
     var timeLeft = new Date().getTime() - this.state.epoch * 1000;
     timeLeft /= 1000;
     timeLeft = 300 - timeLeft;
+    0 - timeLeft;
     this.setState({ time: this.secondsToTime(timeLeft), seconds: timeLeft });
     this.timer = setInterval(this.countDown, 1000);
   }
