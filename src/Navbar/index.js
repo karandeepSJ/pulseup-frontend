@@ -9,6 +9,14 @@ export default () => (
       </Link>
       <ul className="navigation-list float-right">
         <a
+          href="/scoreboard"
+          className="navigation-link"
+          style={{ color: "#9b4dca", fontWeight: "bolder" }}
+        >
+          Scoreboard
+        </a>
+        &nbsp; &nbsp;
+        <a
           href="/logout"
           className="navigation-link"
           style={{ color: "#9b4dca", fontWeight: "bolder" }}
