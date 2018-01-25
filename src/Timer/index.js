@@ -54,7 +54,6 @@ class Timer extends Component {
         })
         .then(response => response.json())
         .then(response => {
-          alert(response.msg);
           window.browserHistory.push(process.env.PUBLIC_URL);
           window.localStorage.removeItem("questions");
         });

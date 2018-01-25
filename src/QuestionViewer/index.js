@@ -112,6 +112,7 @@ class QuestionViewer extends Component {
       var lock = await window.fetchWithAuth("lock");
       lock = await lock.json();
       alert(lock.msg);
+      window.localStorage.removeItem("answers");
       window.browserHistory.push(process.env.PUBLIC_URL);
     }
   }
